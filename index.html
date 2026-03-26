@@ -166,33 +166,126 @@
 
 </section>
 
+<!-- BAR OPTIONS -->
+<section class="section bar-options">
+  <div class="container">
+    <h2>Варианты оформления бара</h2>
+    <p class="bar-options-lead">Подберём оборудование под масштаб и настроение события.</p>
+
+    <div class="bar-carousel" id="barCarousel">
+      <button type="button" class="bar-carousel-arrow left" aria-label="Предыдущая стойка">←</button>
+
+      <div class="bar-carousel-track" id="barTrack">
+        <article class="bar-slide" data-title="Неоновая стойка">
+          <div class="bar-slide-media">
+            <img src="bar-stand-neon.jpg" alt="Неоновая стойка">
+          </div>
+          <div class="bar-slide-body">
+            <div class="bar-slide-head">
+              <div class="bar-slide-num">01</div>
+              <h3>Неоновая стойка</h3>
+            </div>
+            <p>Акцентная подсветка — бар становится фокусом вечера и хорошо читается в сумерках и на уличных площадках.</p>
+          </div>
+        </article>
+
+        <article class="bar-slide" data-title="Стойка на 8 кранов">
+          <div class="bar-slide-media">
+            <img src="bar-stand-8cranes.jpg" alt="Стойка на 8 кранов">
+          </div>
+          <div class="bar-slide-body">
+            <div class="bar-slide-head">
+              <div class="bar-slide-num">02</div>
+              <h3>Стойка на 8 кранов</h3>
+            </div>
+            <p>Крупный формат для фестивалей и больших гостей: до восьми позиций одновременно, уверенная подача в потоке.</p>
+          </div>
+        </article>
+
+        <article class="bar-slide" data-title="Мини-стойки, дерево">
+          <div class="bar-slide-media">
+            <img src="bar-stand-mini-wood.jpg" alt="Мини-стойки, дерево">
+          </div>
+          <div class="bar-slide-body">
+            <div class="bar-slide-head">
+              <div class="bar-slide-num">03</div>
+              <h3>Мини-стойки, дерево</h3>
+            </div>
+            <p>Компактные деревянные стойки для камерных форматов, лаунж-зон и уютных зон общения.</p>
+          </div>
+        </article>
+
+        <article class="bar-slide" data-title="Самовары">
+          <div class="bar-slide-media">
+            <img src="bar-stand-samovars.jpg" alt="Самовары">
+          </div>
+          <div class="bar-slide-body">
+            <div class="bar-slide-head">
+              <div class="bar-slide-num">04</div>
+              <h3>Самовары</h3>
+            </div>
+            <p>Пять самоваров в коллекции — среди них объёмом 16 литров для длинного, неспешного чаепития.</p>
+          </div>
+        </article>
+      </div>
+
+      <button type="button" class="bar-carousel-arrow right" aria-label="Следующая стойка">→</button>
+
+      <div class="bar-carousel-indicator" aria-label="Номер стойки">
+        <span class="bar-carousel-current" id="barCurrent">01</span>
+        <span class="bar-carousel-total">/04</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- EMOTION -->
 <section class="section emotion">
-  <h2>Бар становится местом, где начинается общение</h2>
+  <div class="container emotion-inner">
+    <p class="emotion-quote">Бар становится местом, где начинается общение</p>
+  </div>
 </section>
 
 <!-- GALLERY -->
 <section id="gallery" class="section gallery">
   <div class="container">
     <h2>Наши мероприятия</h2>
-    <p class="gallery-sub">Свадьбы, корпоративы, городские фестивали — Оазис в деле</p>
+    <div class="gallery-intro">
+      <p>Свадьбы, корпоративы, фестивали, частные события — <span class="gallery-accent">Оазис</span> органично вписывается в любой формат.</p>
+      <p>От камерных встреч до масштабных событий.</p>
+    </div>
 
-    <div class="gallery-grid premium-gallery">
-      <article class="gallery-item g1"><span>Эмоции гостей</span></article>
-      <article class="gallery-item g2"><span>Атмосфера праздника</span></article>
-      <article class="gallery-item g3"><span>Культура подачи</span></article>
-      <article class="gallery-item g4"><span>Тёплые встречи</span></article>
-      <article class="gallery-item g5"><span>Свадебный вечер</span></article>
-      <article class="gallery-item g6"><span>Корпоратив</span></article>
-      <article class="gallery-item g7"><span>Фестиваль</span></article>
-      <article class="gallery-item g8"><span>Бар как центр общения</span></article>
-      <article class="gallery-item g9"><span>Чайные ритуалы</span></article>
-      <article class="gallery-item g10"><span>Крафтовая подача</span></article>
-      <article class="gallery-item g11"><span>Живые моменты</span></article>
-      <article class="gallery-item g12"><span>Ваше событие</span></article>
+    <div class="gallery-grid premium-gallery" aria-label="Галерея мероприятий">
+      <article class="gallery-item g1" data-src="g1.jpg" data-title="Эмоции гостей" tabindex="0" role="button" aria-label="Открыть: Эмоции гостей"><span>Эмоции гостей</span></article>
+      <article class="gallery-item g2" data-src="g2.jpg" data-title="Атмосфера праздника" tabindex="0" role="button" aria-label="Открыть: Атмосфера праздника"><span>Атмосфера праздника</span></article>
+      <article class="gallery-item g3" data-src="g3.jpg" data-title="Культура подачи" tabindex="0" role="button" aria-label="Открыть: Культура подачи"><span>Культура подачи</span></article>
+      <article class="gallery-item g4" data-src="g4.jpg" data-title="Тёплые встречи" tabindex="0" role="button" aria-label="Открыть: Тёплые встречи"><span>Тёплые встречи</span></article>
+      <article class="gallery-item g5" data-src="g5.jpg" data-title="Свадебный вечер" tabindex="0" role="button" aria-label="Открыть: Свадебный вечер"><span>Свадебный вечер</span></article>
+      <article class="gallery-item g6" data-src="g6.jpg" data-title="Корпоратив" tabindex="0" role="button" aria-label="Открыть: Корпоратив"><span>Корпоратив</span></article>
+      <article class="gallery-item g7" data-src="g7.jpg" data-title="Фестиваль" tabindex="0" role="button" aria-label="Открыть: Фестиваль"><span>Фестиваль</span></article>
+      <article class="gallery-item g8" data-src="g8.jpg" data-title="Бар как центр общения" tabindex="0" role="button" aria-label="Открыть: Бар как центр общения"><span>Бар как центр общения</span></article>
     </div>
   </div>
 </section>
+
+<!-- GALLERY MODAL -->
+<div class="gallery-modal" id="galleryModal" aria-hidden="true">
+  <div class="gallery-modal-inner" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+    <button class="gallery-modal-close" type="button" aria-label="Закрыть">×</button>
+
+    <button class="gallery-modal-nav prev" type="button" aria-label="Предыдущее фото">‹</button>
+    <button class="gallery-modal-nav next" type="button" aria-label="Следующее фото">›</button>
+
+    <div class="gallery-modal-media">
+      <img id="galleryModalImg" alt="">
+    </div>
+
+    <div class="gallery-modal-caption">
+      <div class="gallery-modal-title" id="galleryModalTitle"></div>
+      <div class="gallery-modal-counter" id="galleryModalCounter"></div>
+    </div>
+  </div>
+</div>
 
 <!-- HOW IT WORKS -->
 <section class="section process">
