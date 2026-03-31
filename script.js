@@ -108,86 +108,220 @@ if (processItems.length) {
   processItems.forEach(item => processObserver.observe(item));
 }
 
-// BAR CAROUSEL (stands)
+// BAR CAROUSEL: бесконечный loop, ПК/планшет 2–3 карточки + стрелки, мобилка 1 + свайп, без автолистания
+const barCarousel = document.getElementById('barCarousel');
+const barViewport = document.getElementById('barViewport');
 const barTrack = document.getElementById('barTrack');
-const barSlides = document.querySelectorAll('.bar-slide');
 const barPrev = document.querySelector('.bar-carousel-arrow.left');
 const barNext = document.querySelector('.bar-carousel-arrow.right');
 const barCurrent = document.getElementById('barCurrent');
 const barTotal = document.querySelector('.bar-carousel-total');
 
-function getMostVisibleBarSlideIndex() {
-  if (!barTrack || !barSlides.length) return 0;
-  const trackRect = barTrack.getBoundingClientRect();
-  let bestIndex = 0;
-  let bestRatio = -1;
+const BAR_GAP = 16;
 
-  barSlides.forEach((slide, i) => {
-    const r = slide.getBoundingClientRect();
-    const visibleLeft = Math.max(r.left, trackRect.left);
-    const visibleRight = Math.min(r.right, trackRect.right);
-    const visible = Math.max(0, visibleRight - visibleLeft);
-    const ratio = visible / Math.max(1, r.width);
+function initBarCarousel() {
+  if (!barTrack || !barViewport) return;
 
-    if (ratio > bestRatio + 1e-6) {
-      bestRatio = ratio;
-      bestIndex = i;
-      return;
+  const originals = Array.from(barTrack.querySelectorAll('.bar-slide'));
+  if (!originals.length) return;
+
+  const n = originals.length;
+  barTrack.innerHTML = '';
+  for (let g = 0; g < 3; g += 1) {
+    originals.forEach((orig) => {
+      const node = orig.cloneNode(true);
+      if (g !== 1) node.setAttribute('aria-hidden', 'true');
+      barTrack.appendChild(node);
+    });
+  }
+
+  const slides = Array.from(barTrack.querySelectorAll('.bar-slide'));
+  if (barTotal) barTotal.textContent = `/${String(n).padStart(2, '0')}`;
+
+  let index = n;
+  let isAnimating = false;
+
+  function slideWidthPx() {
+    const vw = barViewport.getBoundingClientRect().width;
+    const iw = window.innerWidth;
+    if (iw <= 900) {
+      /* Почти на всю ширину — соседи едва заметны по краям */
+      return Math.min(520, Math.max(220, Math.round(vw * 0.94)));
     }
-
-    if (Math.abs(ratio - bestRatio) < 1e-6 && i < bestIndex) {
-      bestIndex = i;
+    if (iw <= 1199) {
+      return Math.max(200, Math.round((vw - BAR_GAP) / 2));
     }
+    return Math.max(200, Math.round((vw - 2 * BAR_GAP) / 3));
+  }
+
+  let cachedSlideW = null;
+
+  function layoutSlides() {
+    const w = slideWidthPx();
+    if (cachedSlideW !== null && Math.abs(w - cachedSlideW) < 0.5) return;
+    cachedSlideW = w;
+    slides.forEach((s) => {
+      s.style.flex = `0 0 ${w}px`;
+      s.style.width = `${w}px`;
+    });
+  }
+
+  function updateIndicator() {
+    if (!barCurrent) return;
+    const real = ((index % n) + n) % n;
+    barCurrent.textContent = String(real + 1).padStart(2, '0');
+  }
+
+  function updateActiveClasses() {
+    slides.forEach((s, i) => {
+      s.classList.remove('is-active', 'is-side-left', 'is-side-right');
+      if (i === index) s.classList.add('is-active');
+      else if (i === index - 1) s.classList.add('is-side-left');
+      else if (i === index + 1) s.classList.add('is-side-right');
+    });
+  }
+
+  function updateTranslate(instant, loopJump) {
+    layoutSlides();
+    const slide = slides[index];
+    if (!slide) return;
+
+    const w = slideWidthPx();
+    const slideCenter = index * (w + BAR_GAP) + w / 2;
+    const vw = barViewport.getBoundingClientRect().width;
+    const tx = vw / 2 - slideCenter;
+
+    if (instant && loopJump && barCarousel) barCarousel.classList.add('bar-carousel--jump');
+
+    if (instant) barTrack.classList.add('is-instant');
+    barTrack.style.transform = `translateX(${tx}px)`;
+    if (instant) {
+      void barTrack.offsetHeight;
+      barTrack.classList.remove('is-instant');
+    }
+    updateActiveClasses();
+    updateIndicator();
+
+    if (instant && loopJump && barCarousel) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          barCarousel.classList.remove('bar-carousel--jump');
+        });
+      });
+    }
+  }
+
+  function handleLoop() {
+    if (index >= n * 2) {
+      index -= n;
+      updateTranslate(true, true);
+    } else if (index < n) {
+      index += n;
+      updateTranslate(true, true);
+    }
+  }
+
+  let animEndTimer = null;
+
+  function finishBarAnim() {
+    if (!isAnimating) return;
+    handleLoop();
+    isAnimating = false;
+    syncArrows();
+    if (animEndTimer) {
+      clearTimeout(animEndTimer);
+      animEndTimer = null;
+    }
+  }
+
+  function goNext() {
+    if (isAnimating) return;
+    isAnimating = true;
+    syncArrows();
+    index += 1;
+    updateTranslate(false);
+    if (animEndTimer) clearTimeout(animEndTimer);
+    animEndTimer = window.setTimeout(finishBarAnim, 900);
+  }
+
+  function goPrev() {
+    if (isAnimating) return;
+    isAnimating = true;
+    syncArrows();
+    index -= 1;
+    updateTranslate(false);
+    if (animEndTimer) clearTimeout(animEndTimer);
+    animEndTimer = window.setTimeout(finishBarAnim, 900);
+  }
+
+  function syncArrows() {
+    if (barPrev) barPrev.disabled = isAnimating;
+    if (barNext) barNext.disabled = isAnimating;
+  }
+
+  barTrack.addEventListener('transitionend', (e) => {
+    if (e.target !== barTrack) return;
+    const prop = e.propertyName || '';
+    if (!prop.toLowerCase().includes('transform')) return;
+    if (!isAnimating) return;
+    finishBarAnim();
   });
 
-  return bestIndex;
-}
+  barTrack.addEventListener('transitioncancel', () => {
+    if (!isAnimating) return;
+    finishBarAnim();
+  });
 
-function updateBarIndexByScroll() {
-  if (!barTrack || !barSlides.length || !barCurrent) return;
-  const bestIndex = getMostVisibleBarSlideIndex();
-  const pad = String(bestIndex + 1).padStart(2, '0');
-  barCurrent.textContent = pad;
-  return bestIndex;
-}
+  if (barPrev) barPrev.addEventListener('click', () => goPrev());
+  if (barNext) barNext.addEventListener('click', () => goNext());
 
-function scrollBarToIndex(index) {
-  if (!barTrack || !barSlides.length) return;
-  const nextIndex = Math.max(0, Math.min(barSlides.length - 1, index));
-  const slide = barSlides[nextIndex];
-  const left = slide.offsetLeft - 56;
-  barTrack.scrollTo({ left, behavior: 'smooth' });
-  updateBarIndexByScroll();
-}
+  let touchStartX = 0;
+  barViewport.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartX = e.touches[0].clientX;
+    },
+    { passive: true }
+  );
+  barViewport.addEventListener(
+    'touchend',
+    (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) < 48) return;
+      if (dx < 0) goNext();
+      else goPrev();
+    },
+    { passive: true }
+  );
 
-if (barTrack && barSlides.length) {
-  if (barTotal) barTotal.textContent = `/${String(barSlides.length).padStart(2, '0')}`;
-
-  barTrack.addEventListener('scroll', () => {
-    window.requestAnimationFrame(updateBarIndexByScroll);
-  }, { passive: true });
-
-  // Replace placeholder behavior with dynamic based on current index.
-  let currentIndex = 0;
-  const updateCurrentIndex = () => {
-    if (!barSlides.length) return;
-    const best = updateBarIndexByScroll();
-    currentIndex = typeof best === 'number' ? best : 0;
-  };
-
-  barTrack.addEventListener('scroll', () => {
-    window.requestAnimationFrame(updateCurrentIndex);
-  }, { passive: true });
-
-  if (barPrev) {
-    barPrev.onclick = () => scrollBarToIndex(currentIndex - 1);
-  }
-  if (barNext) {
-    barNext.onclick = () => scrollBarToIndex(currentIndex + 1);
+  if (barCarousel) {
+    barCarousel.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goPrev();
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goNext();
+      }
+    });
   }
 
-  updateCurrentIndex();
+  const ro = new ResizeObserver(() => {
+    cachedSlideW = null;
+    updateTranslate(true);
+  });
+  ro.observe(barViewport);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      updateTranslate(true);
+      syncArrows();
+    });
+  });
 }
+
+initBarCarousel();
 
 // GALLERY MODAL (clickable, swipe, prev/next)
 const galleryModal = document.getElementById('galleryModal');

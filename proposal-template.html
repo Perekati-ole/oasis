@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--
+  Шаблон КП «Оазис»: скопируйте proposal-template.html + proposal-template.css в новую папку
+  и замените тексты внутри блоков. Дизайн совпадает с главной страницей (шрифты, фон, акценты).
+-->
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Коммерческое предложение — Оазис</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="proposal-template.css">
+</head>
+<body class="proposal-page">
+
+<div class="proposal-line" aria-hidden="true"></div>
+
+<header class="proposal-header">
+  <div class="proposal-container">
+    <a href="index.html" class="proposal-brand proposal-brand--home" aria-label="Оазис — на главную страницу">ОАЗИС</a>
+    <div class="proposal-tagline">Выездные бары · Барнаул</div>
+  </div>
+</header>
+
+<main class="proposal-main">
+  <div class="proposal-container">
+
+    <p class="proposal-kicker">Коммерческое предложение</p>
+    <!-- Замените заголовок на название мероприятия клиента -->
+    <h1 class="proposal-event-title">Название мероприятия</h1>
+
+    <div class="proposal-meta">
+      <div class="proposal-meta-item">
+        <label>Дата и время</label>
+        <p><span class="proposal-placeholder">— укажите дату и время</span></p>
+      </div>
+      <div class="proposal-meta-item">
+        <label>Гости</label>
+        <p><span class="proposal-placeholder">— количество гостей</span></p>
+      </div>
+      <div class="proposal-meta-item">
+        <label>Площадка</label>
+        <p><span class="proposal-placeholder">— адрес / формат</span></p>
+      </div>
+      <div class="proposal-meta-item">
+        <label>Контакт</label>
+        <p><span class="proposal-placeholder">— имя, телефон</span></p>
+      </div>
+    </div>
+
+    <section class="proposal-section" aria-labelledby="sec-format">
+      <h2 id="sec-format">Формат бара</h2>
+      <p><span class="proposal-placeholder">Например: кран-бар / самовар-бар / комбинация. Кратко опишите сценарий.</span></p>
+    </section>
+
+    <section class="proposal-section" aria-labelledby="sec-includes">
+      <h2 id="sec-includes">Что входит</h2>
+      <ul class="proposal-list">
+        <li><span class="proposal-placeholder">Пункт 1 — оборудование, монтаж, сервис</span></li>
+        <li><span class="proposal-placeholder">Пункт 2</span></li>
+        <li><span class="proposal-placeholder">Пункт 3</span></li>
+      </ul>
+    </section>
+
+    <section class="proposal-section" aria-labelledby="sec-drinks">
+      <h2 id="sec-drinks">Напитки</h2>
+      <ul class="proposal-list">
+        <li><span class="proposal-placeholder">Позиции и объёмы</span></li>
+        <li><span class="proposal-placeholder">Дополнительно по согласованию</span></li>
+      </ul>
+    </section>
+
+    <section class="proposal-section" aria-labelledby="sec-timing">
+      <h2 id="sec-timing">Тайминг</h2>
+      <div class="proposal-timing">
+        <div class="proposal-timing-row">
+          <div class="proposal-time">Прибытие / монтаж</div>
+          <p><span class="proposal-placeholder">— время и длительность</span></p>
+        </div>
+        <div class="proposal-timing-row">
+          <div class="proposal-time">Работа бара</div>
+          <p><span class="proposal-placeholder">— часы обслуживания</span></p>
+        </div>
+        <div class="proposal-timing-row">
+          <div class="proposal-time">Демонтаж</div>
+          <p><span class="proposal-placeholder">— по завершении</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="proposal-section" aria-labelledby="sec-price">
+      <h2 id="sec-price">Стоимость</h2>
+      <div class="proposal-price-block">
+        <div class="proposal-price-label">Итого</div>
+        <div class="proposal-price-value"><span class="proposal-placeholder">от 00 000 ₽</span></div>
+        <p class="proposal-price-note">Стоимость зависит от формата мероприятия и количества гостей. Финальная смета — после согласования деталей.</p>
+      </div>
+
+      <div class="proposal-cta">
+        <a class="proposal-btn proposal-btn--primary" href="https://wa.me/79628081934" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a class="proposal-btn" href="tel:+79628081934">+7 (962) 808-19-34</a>
+        <a class="proposal-btn" href="#">Email — укажите адрес</a>
+      </div>
+    </section>
+
+    <p class="proposal-footer-note">
+      Документ подготовлен для обсуждения условий и не является публичной офертой до подписания договора или счёта.
+    </p>
+
+  </div>
+</main>
+
+</body>
+</html>
